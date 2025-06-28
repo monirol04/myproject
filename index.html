@@ -132,6 +132,32 @@
       font-weight: bold;
       margin-top: 15px;
     }
+
+    .notes-section {
+      margin-top: 16px;
+      width: 100%;
+      background: #fffbe5;
+      border-left: 4px solid #ffd700;
+      border-radius: 8px;
+      padding: 12px 18px;
+      font-size: 1.05em;
+      color: #8a6d00;
+      box-sizing: border-box;
+    }
+
+    /* Footer styling */
+    footer {
+      text-align: center;
+      margin-top: 36px;
+      color: #0077B3;
+      font-size: 1em;
+      padding-bottom: 10px;
+    }
+    footer a {
+      color: #005a8c;
+      text-decoration: underline;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
@@ -154,20 +180,27 @@
           <!-- Student result will be shown here -->
         </tbody>
       </table>
+      <div class="notes-section" id="notesSection"></div>
       <button onclick="goBack()">Back</button>
     </div>
   </div>
 
+  <!-- Footer -->
+  <footer>
+    All rights reserved by
+    <a href="https://www.facebook.com/share/19hSeUnBvM/">monirol</a>
+  </footer>
+
   <script>
     const studentData = [
       { id: 'S001', name: 'Emma Johnson', math: 92, science: 88, english: 95, history: 90 },
-      { id: 'S002', name: 'Noah Williams', math: 85, science: 90, english: 82, history: 88 },
-      { id: 'S003', name: 'Olivia Brown', math: 78, science: 92, english: 88, history: 85 },
+      { id: 'S002', name: 'Noah Williams', math: 85, science: 90, english: 82, history: 38 },
+      { id: 'S003', name: 'Olivia Brown', math: 78, science: 32, english: 88, history: 85 },
       { id: 'S004', name: 'Liam Jones', math: 95, science: 87, english: 90, history: 91 },
-      { id: 'S005', name: 'Ava Garcia', math: 88, science: 91, english: 84, history: 89 },
-      { id: 'S006', name: 'Lucas Miller', math: 90, science: 85, english: 92, history: 86 },
+      { id: 'S005', name: 'Ava Garcia', math: 88, science: 91, english: 84, history: 39 },
+      { id: 'S006', name: 'Lucas Miller', math: 90, science: 35, english: 92, history: 86 },
       { id: 'S007', name: 'Mia Davis', math: 83, science: 89, english: 91, history: 87 },
-      { id: 'S008', name: 'Ethan Rodriguez', math: 91, science: 84, english: 86, history: 92 },
+      { id: 'S008', name: 'Ethan Rodriguez', math: 91, science: 84, english: 36, history: 92 },
       { id: 'S009', name: 'Isabella Martinez', math: 87, science: 93, english: 89, history: 84 },
       { id: 'S010', name: 'James Wilson', math: 94, science: 86, english: 93, history: 90 }
     ];
@@ -182,8 +215,10 @@
       const resultsContainer = document.getElementById('resultsContainer');
       const inputSection = document.getElementById('inputSection');
       const tbody = document.querySelector('#resultTable tbody');
+      const notesSection = document.getElementById('notesSection');
       messageDiv.textContent = '';
       tbody.innerHTML = '';
+      notesSection.textContent = '';
 
       if (!inputId) {
         messageDiv.textContent = "Please enter your Student ID.";
@@ -209,6 +244,20 @@
         `<tr class="total-row"><th>Total</th><td>${total}</td></tr>`
       ];
       tbody.innerHTML = rows.join('');
+
+      // Notes for subjects below 40
+      const weakSubjects = [];
+      if (student.math < 40) weakSubjects.push("Mathematics");
+      if (student.science < 40) weakSubjects.push("Science");
+      if (student.english < 40) weakSubjects.push("English");
+      if (student.history < 40) weakSubjects.push("History");
+
+      if (weakSubjects.length > 0) {
+        notesSection.textContent = 
+          "Note: You need to improve in the following subject(s): " + weakSubjects.join(", ") + ".";
+      } else {
+        notesSection.textContent = "Great job! You have passed all subjects.";
+      }
 
       inputSection.style.display = 'none';
       resultsContainer.style.display = 'flex';
